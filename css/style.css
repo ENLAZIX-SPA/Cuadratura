@@ -1,0 +1,535 @@
+/* ============================================================
+   STYLE.CSS — estructura, layout y componentes.
+   Los valores de color/tipografía/espaciado vienen todos de
+   variables.css. Evita escribir colores "a mano" aquí: usa
+   siempre var(--...) para que la plantilla siga siendo
+   reutilizable.
+   ============================================================ */
+
+/* ---------- RESET BÁSICO ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  line-height: var(--lh-tight);
+  margin: 0 0 var(--space-sm);
+  font-weight: 600;
+}
+
+p { margin: 0 0 var(--space-sm); }
+
+.contenedor {
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: var(--space-md);
+}
+
+/* Foco visible accesible en toda la plantilla */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* ---------- EYEBROW / ETIQUETA ESTILO "COLUMNA DE LIBRO" ----------
+   Elemento de firma tipográfica: pequeñas mayúsculas espaciadas
+   con una línea corta, como el encabezado de una columna de
+   un libro contable. Se reutiliza en toda la plantilla. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-data);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--space-xs);
+}
+.eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 1px;
+  background: var(--color-accent);
+}
+
+/* ---------- LÍNEA DE CUADRE (elemento de firma) ----------
+   En un libro contable, el "cuadre" es la línea doble que
+   cierra una suma. La usamos como separador de sección: una
+   línea fina, un pequeño signo "=" y otra línea fina. */
+.linea-cuadre {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin: var(--space-lg) 0;
+  color: var(--color-line);
+}
+.linea-cuadre::before,
+.linea-cuadre::after {
+  content: "";
+  flex: 1;
+  border-top: var(--border-thin);
+}
+.linea-cuadre span {
+  font-family: var(--font-data);
+  font-size: var(--fs-small);
+  color: var(--color-accent);
+}
+
+/* ---------- BOTONES ---------- */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 0.85rem 1.6rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+.boton:hover { transform: translateY(-1px); }
+.boton:active { transform: translateY(0); }
+
+.boton--primario {
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+.boton--primario:hover { background: #A2762F; }
+
+.boton--fantasma {
+  background: transparent;
+  border-color: currentColor;
+  color: var(--color-ink);
+}
+.tema-tinta .boton--fantasma { color: var(--color-paper); }
+.boton--fantasma:hover { background: rgba(0,0,0,0.05); }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.encabezado {
+  background: var(--color-paper);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: var(--border-thin);
+}
+.encabezado .contenedor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: var(--space-sm);
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--color-ink);
+}
+.marca img { height: 32px; width: auto; }
+/* Si no hay logo en imagen, este bloque simula un sello/timbre */
+.marca-icono {
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid var(--color-accent);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-data);
+  font-size: 0.7rem;
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.nav-principal { display: flex; align-items: center; gap: var(--space-md); }
+.nav-links { display: flex; gap: var(--space-md); list-style: none; margin: 0; padding: 0; }
+.nav-links a {
+  text-decoration: none;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--color-ink-soft);
+  padding-block: 0.3rem;
+  border-bottom: 1px solid transparent;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+.nav-links a:hover { color: var(--color-ink); border-color: var(--color-accent); }
+
+.boton-menu {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.4rem;
+}
+.boton-menu span, .boton-menu::before, .boton-menu::after {
+  content: "";
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--color-ink);
+  margin: 5px 0;
+  transition: transform var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease);
+}
+
+@media (max-width: 860px) {
+  .boton-menu { display: block; }
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--color-paper);
+    flex-direction: column;
+    padding: var(--space-sm) var(--space-md) var(--space-md);
+    border-bottom: var(--border-thin);
+    display: none;
+  }
+  .nav-links.abierto { display: flex; }
+  .nav-principal .boton { display: none; }
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  padding-block: var(--space-xl) var(--space-lg);
+  position: relative;
+  overflow: hidden;
+}
+.hero .contenedor {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: var(--space-lg);
+  align-items: center;
+}
+.hero h1 { font-size: var(--fs-hero); }
+.hero h1 em {
+  font-style: normal;
+  color: var(--color-accent);
+}
+.hero__intro {
+  font-size: 1.15rem;
+  color: var(--color-ink-soft);
+  max-width: 46ch;
+}
+.hero__acciones {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+  flex-wrap: wrap;
+}
+
+/* Panel visual del hero: simula una "hoja de cálculo" o
+   comprobante, coherente con el rubro, sin depender de fotos. */
+.hero__panel {
+  background: var(--color-white);
+  border: var(--border-thin);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  box-shadow: 8px 8px 0 var(--color-accent-soft);
+}
+.hero__panel-fila {
+  display: flex;
+  justify-content: space-between;
+  padding-block: 0.55rem;
+  border-bottom: 1px dashed var(--color-line);
+  font-family: var(--font-data);
+  font-size: var(--fs-small);
+}
+.hero__panel-fila:last-child { border-bottom: none; }
+.hero__panel-fila span:first-child { color: var(--color-ink-soft); }
+.hero__panel-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 2px double var(--color-ink);
+  font-family: var(--font-data);
+  font-weight: 700;
+}
+
+@media (max-width: 860px) {
+  .hero .contenedor { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   FRANJA DE CONFIANZA (logos / cifras rápidas)
+   ============================================================ */
+.franja-cifras {
+  background: var(--color-paper-alt);
+  border-block: var(--border-thin);
+  padding-block: var(--space-md);
+}
+.franja-cifras .contenedor {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-md);
+  text-align: center;
+}
+.cifra__numero {
+  font-family: var(--font-data);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+.cifra__etiqueta {
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
+/* ============================================================
+   SECCIONES GENERALES
+   ============================================================ */
+.seccion { padding-block: var(--space-xl); }
+.seccion--alterna { background: var(--color-paper-alt); }
+.seccion__encabezado { max-width: 62ch; margin-bottom: var(--space-lg); }
+.seccion__encabezado p { color: var(--color-ink-soft); font-size: 1.05rem; }
+
+/* ---------- SERVICIOS: tarjetas tipo "ficha" ---------- */
+.grid-servicios {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-md);
+}
+.ficha {
+  background: var(--color-white);
+  border: var(--border-thin);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  position: relative;
+  transition: transform var(--dur-normal) var(--ease), box-shadow var(--dur-normal) var(--ease);
+}
+.ficha::before {
+  content: "";
+  position: absolute;
+  top: -1px; left: var(--space-md);
+  width: 34px; height: 6px;
+  background: var(--color-accent);
+  border-radius: 0 0 3px 3px;
+}
+.ficha:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 24px -12px rgba(27,46,53,0.25);
+}
+.ficha__icono {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--color-paper-alt);
+  color: var(--color-teal);
+  display: grid; place-items: center;
+  margin-bottom: var(--space-sm);
+  font-family: var(--font-data);
+  font-weight: 700;
+}
+.ficha h3 { font-size: var(--fs-h3); }
+.ficha p { color: var(--color-ink-soft); font-size: var(--fs-small); margin-bottom: 0; }
+
+/* ---------- PROCESO: aquí SÍ hay una secuencia real ---------- */
+.proceso {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-md);
+  counter-reset: paso;
+}
+.paso { position: relative; padding-top: var(--space-md); }
+.paso::before {
+  counter-increment: paso;
+  content: counter(paso, decimal-leading-zero);
+  font-family: var(--font-data);
+  font-size: var(--fs-small);
+  color: var(--color-accent);
+  display: block;
+  border-top: 2px solid var(--color-accent);
+  padding-top: var(--space-xs);
+  width: 3rem;
+  margin-bottom: var(--space-sm);
+}
+.paso h3 { font-size: 1.1rem; }
+.paso p { color: var(--color-ink-soft); font-size: var(--fs-small); }
+
+/* ---------- POR QUÉ ELEGIRNOS: lista con check estilo timbre ---------- */
+.lista-valores { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-sm); }
+.lista-valores li {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-start;
+  padding-block: var(--space-sm);
+  border-bottom: 1px dashed var(--color-line);
+}
+.lista-valores li:last-child { border-bottom: none; }
+.lista-valores strong { display: block; font-family: var(--font-display); font-size: 1.05rem; }
+.lista-valores span { color: var(--color-ink-soft); font-size: var(--fs-small); }
+.check {
+  flex-shrink: 0;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-teal);
+  color: var(--color-teal);
+  display: grid; place-items: center;
+  font-size: 0.8rem;
+}
+
+/* ---------- TESTIMONIOS ---------- */
+.testimonio {
+  background: var(--color-white);
+  border: var(--border-thin);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  max-width: 62ch;
+  margin-inline: auto;
+  text-align: center;
+}
+.testimonio blockquote {
+  margin: 0 0 var(--space-md);
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  line-height: 1.4;
+}
+.testimonio cite {
+  font-style: normal;
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+.testimonio__controles {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+.testimonio__punto {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-line);
+  cursor: pointer;
+  padding: 0;
+}
+.testimonio__punto[aria-current="true"] { background: var(--color-accent); }
+
+/* ---------- CONTACTO ---------- */
+.contacto {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+.formulario { display: grid; gap: var(--space-sm); }
+.campo { display: grid; gap: 0.35rem; }
+.campo label {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.campo input,
+.campo select,
+.campo textarea {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  padding: 0.75rem 0.9rem;
+  border: var(--border-thin);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+.campo textarea { resize: vertical; min-height: 110px; }
+.campo small { color: var(--color-error); font-size: 0.78rem; min-height: 1em; display: block; }
+
+.formulario__estado {
+  font-size: var(--fs-small);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  display: none;
+}
+.formulario__estado.exito { display: block; background: rgba(47,110,98,0.12); color: var(--color-success); }
+.formulario__estado.error { display: block; background: rgba(166,67,47,0.12); color: var(--color-error); }
+
+.contacto__info dl {
+  display: grid;
+  gap: var(--space-sm);
+  margin: var(--space-md) 0 0;
+}
+.contacto__info dt {
+  font-family: var(--font-data);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+.contacto__info dd { margin: 0.2rem 0 0; color: var(--color-ink-soft); }
+
+@media (max-width: 780px) {
+  .contacto { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.pie {
+  padding-block: var(--space-lg) var(--space-md);
+}
+.pie .contenedor {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: var(--space-lg);
+}
+.pie h3 { font-size: 1rem; margin-bottom: var(--space-sm); }
+.pie ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+.pie a { text-decoration: none; font-size: var(--fs-small); opacity: 0.85; }
+.pie a:hover { opacity: 1; text-decoration: underline; }
+.pie__marca p { opacity: 0.75; font-size: var(--fs-small); max-width: 32ch; }
+.pie__legal {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-line);
+  font-size: 0.78rem;
+  opacity: 0.6;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+@media (max-width: 780px) {
+  .pie .contenedor { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .pie .contenedor { grid-template-columns: 1fr; }
+}
+
+/* ---------- Animación de entrada suave al hacer scroll ---------- */
+.revelar {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--dur-normal) var(--ease), transform var(--dur-normal) var(--ease);
+}
+.revelar.visible { opacity: 1; transform: translateY(0); }

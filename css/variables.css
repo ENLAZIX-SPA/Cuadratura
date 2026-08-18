@@ -1,0 +1,85 @@
+/* ============================================================
+   VARIABLES.CSS
+   Este archivo es el "panel de control" de la plantilla.
+   Para adaptar el sitio a un cliente nuevo, normalmente solo
+   necesitas editar ESTE archivo: colores, tipografías y
+   tamaños. El resto del CSS (style.css) no debería tocarse
+   salvo que quieras cambiar la estructura del layout.
+   ============================================================ */
+
+:root {
+
+  /* ---------- 1. PALETA DE COLOR ----------
+     Concepto: "libro contable" (ledger). Papel cálido, tinta
+     profunda y un dorado tipo timbre/sello para los acentos.
+     Es una paleta cuasi-complementaria: el dorado (~40° en el
+     círculo cromático) y el verde-azulado tinta (~185°) están
+     casi enfrentados, por eso generan contraste sin chillar.
+     Para "clonar" la plantilla a otro rubro, cambia estos 6
+     valores y todo el sitio se re-tiñe solo. */
+
+  --color-paper:        #F6F1E7;  /* fondo principal, tipo papel */
+  --color-paper-alt:     #EDE6D6; /* fondo alterno para franjas de sección */
+  --color-ink:            #1B2E35; /* texto principal / fondos oscuros */
+  --color-ink-soft:       #46595F; /* texto secundario sobre papel */
+  --color-accent:         #B8863E; /* dorado "sello": CTAs, detalles, hover */
+  --color-accent-soft:    #DCC49A; /* dorado suave: fondos sutiles, bordes */
+  --color-teal:            #2F6E62; /* verde-tinta: apoyo de RRHH/crecimiento */
+  --color-line:            #C9BFA8; /* líneas divisoras estilo "renglón de libro" */
+  --color-white:           #FFFFFF;
+
+  /* Estados */
+  --color-success:  #2F6E62;
+  --color-error:    #A6432F;
+
+  /* ---------- 2. TIPOGRAFÍA ----------
+     Roles:
+     - Display (títulos): con carácter, tipo editorial/documento.
+     - Texto (cuerpo): neutra y muy legible.
+     - Datos (cifras, etiquetas): monoespaciada, para que las
+       columnas de números "cuadren" visualmente — coherente
+       con el rubro contable. */
+
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body:    "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-data:    "JetBrains Mono", "Courier New", monospace;
+
+  --fs-hero:       clamp(2.6rem, 5vw + 1rem, 4.6rem);
+  --fs-h2:         clamp(1.9rem, 2.4vw + 1rem, 2.8rem);
+  --fs-h3:         clamp(1.25rem, 1vw + 1rem, 1.6rem);
+  --fs-body:       1rem;
+  --fs-small:      0.875rem;
+  --fs-eyebrow:    0.78rem;
+
+  --lh-tight:  1.1;
+  --lh-normal: 1.6;
+
+  /* ---------- 3. ESPACIADO Y FORMA ---------- */
+  --space-xs:  0.5rem;
+  --space-sm:  1rem;
+  --space-md:  2rem;
+  --space-lg:  4rem;
+  --space-xl:  7rem;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+
+  --container-width: 1180px;
+  --border-thin: 1px solid var(--color-line);
+
+  /* ---------- 4. MOVIMIENTO ---------- */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 180ms;
+  --dur-normal: 400ms;
+}
+
+/* ---------- MODO OSCURO OPCIONAL PARA EL HEADER/FOOTER ----------
+   Se usa como bloque de "tinta" (fondo oscuro) en header y footer,
+   invirtiendo el rol de papel/tinta. */
+.tema-tinta {
+  --color-paper: #1B2E35;
+  --color-paper-alt: #142228;
+  --color-ink: #F6F1E7;
+  --color-ink-soft: #B9C4C2;
+  --color-line: #33474D;
+}

@@ -93,10 +93,9 @@ function iniciarTestimonios() {
 }
 
 /* ---------- 4. VALIDACIÓN Y ENVÍO DEL FORMULARIO DE CONTACTO ----------
-   Nota: este formulario NO envía datos a ningún servidor todavía.
-   Cuando conectes un backend o un servicio (Formspree, Google
-   Forms, tu propio endpoint, etc.), reemplaza la función
-   enviarFormulario() por la llamada real (fetch a tu API). */
+   Conectado a una función de Supabase (Edge Function "hyper-action"),
+   que guarda el mensaje en la tabla "consultas" y envía una alerta por
+   correo vía Resend. Ver GUIA-FORMULARIO-SUPABASE.md para el detalle. */
 function iniciarFormulario() {
   const form = document.querySelector('#formulario-contacto');
   if (!form) return;
@@ -171,9 +170,23 @@ function mostrarEstado(elemento, tipo, texto) {
   elemento.textContent = texto;
 }
 
-// Simulación de envío (reemplazar por integración real)
-function enviarFormulario(datos) {
-  return new Promise((resolve) => setTimeout(resolve, 900));
+// Envía el mensaje a la función de Supabase (guarda en la base de datos
+// y dispara la alerta por correo vía Resend).
+async function enviarFormulario(datos) {
+  const respuesta = await fetch('https://oevrohzugjilhyommkby.supabase.co/functions/v1/hyper-action', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': 'sb_publishable_JYZxaJ7p0CKcZzIoQNIpcw_SkSZK38T',
+    },
+    body: JSON.stringify({
+      nombre: datos.get('nombre'),
+      correo: datos.get('correo'),
+      empresa: datos.get('empresa'),
+      mensaje: datos.get('mensaje'),
+    }),
+  });
+  if (!respuesta.ok) throw new Error('Error al enviar');
 }
 
 /* ---------- 5. AÑO AUTOMÁTICO EN EL FOOTER ---------- */
